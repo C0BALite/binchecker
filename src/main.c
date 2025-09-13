@@ -24,19 +24,35 @@
 
 #include "binchecker-application.h"
 
-int
-main (int   argc,
-      char *argv[])
-{
-	g_autoptr(BincheckerApplication) app = NULL;
-	int ret;
+#include "libbindiff.h"
 
-	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
-	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-	textdomain (GETTEXT_PACKAGE);
+#include <libgen.h>
 
-	app = binchecker_application_new ("org.gnome.BinChecker", G_APPLICATION_DEFAULT_FLAGS);
-	ret = g_application_run (G_APPLICATION (app), argc, argv);
+int main (int argc, char *argv[]){
+    char *initial_directory = "/home/coba/Projects/BinChecker/TestInput";
+    int count = 0;
+    int capacity = 0;
+    char **file_paths = NULL;
+    char fp1[512], fp2[512]; // Use buffers with sufficient size
+    char *fname;
+    get_all_file_paths(initial_directory, &file_paths, &count, &capacity);
+    printf("Found %d files:\n", count);
+    for (int i = 0; i < count; i++) {
+        fname = basename(file_paths[i]);
+        snprintf(fp1, sizeof(fp1), "/home/coba/Projects/BinChecker/TestInput/%s", fname);
+        snprintf(fp2, sizeof(fp2), "/home/coba/Projects/BinChecker/TestOutput/%s", fname);
+        compare_files (fp1,fp2,4);
+        free(file_paths[i]); // Free individual path strings
+    }
+    free(file_paths); // Free the array itself
 
-	return ret;
+    g_autoptr(BincheckerApplication) app = NULL;
+    int ret;
+    bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+    bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+    textdomain (GETTEXT_PACKAGE);
+
+    app = binchecker_application_new ("org.gnome.BinChecker", G_APPLICATION_DEFAULT_FLAGS);
+    ret = g_application_run (G_APPLICATION (app), argc, argv);
+    return ret;
 }
