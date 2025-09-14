@@ -5,13 +5,13 @@ A description of this project.
 
 -Run the application
 
--Select two folders using the Dir1 and Dir2 buttons
+-Select two folders using the file select buttons
 
--Press the scan button (the one with the refresh icon)
+-Press the scan button
 
--Afterwards all of the corrupted files will be listed in the main window
+-Afterwards all of the corrupted files will be listed on a new page in a list format
 
--To access specific information about a file select it in the list
+-To access specific information about a file select it in the list, different bytes will be marked down with bold text
 
 -Padding can be added to the sides of of the corrupted portion of data if need be. To select the amount of padding (in bytes) increase or decrease the number in the spinbox to the right of the scan button
 
