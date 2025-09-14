@@ -4,7 +4,7 @@ binchecker_sources = [
   'binchecker-window.c',
 ]
 
-libbindiff_inc = include_directories('/usr/local/include/libbindiff') # Header directory for the library
+libbindiff_inc = include_directories('/usr/local/include/libbindiff')
 
 libbindiff = meson.get_compiler('c').find_library('bindiff')
 

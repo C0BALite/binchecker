@@ -97,11 +97,9 @@ show_diff_dialog(BincheckerWindow * self,
         box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
         gtk_widget_set_hexpand(box, TRUE);
 
-        // Count diffs safely
         diff_count = 0;
         if (diffs) {
-                while (diff_count < 10 && // Safety limit
-                        (diffs[diff_count].pos != 0 || diffs[diff_count].length != 0 ||
+                while (diff_count < 10 && (diffs[diff_count].pos != 0 || diffs[diff_count].length != 0 ||
                                 diffs[diff_count].diffFile1 != NULL || diffs[diff_count].diffFile2 != NULL)) {
                         diff_count++;
                 }
@@ -279,7 +277,6 @@ on_scan_button_clicked(GtkButton * button, BincheckerWindow * self) {
                 char fp1[512], fp2[512];
                 struct diffChunk * diffs;
 
-                // Construct filepaths
                 basename = g_path_get_basename(files1[i]);
                 snprintf(fp1, sizeof(fp1), "%s/%s", self -> dir1_path, basename);
                 snprintf(fp2, sizeof(fp2), "%s/%s", self -> dir2_path, basename);
@@ -287,11 +284,7 @@ on_scan_button_clicked(GtkButton * button, BincheckerWindow * self) {
                 if (diffs) {
                         GtkWidget * row;
                         GtkWidget * label;
-
-                        // Store diffs for this file
                         g_hash_table_insert(self -> file_diffs, g_strdup(basename), diffs);
-
-                        // Add to list box
                         row = gtk_list_box_row_new();
                         label = gtk_label_new(basename);
                         gtk_widget_set_margin_start(label, 12);
@@ -345,11 +338,9 @@ static void
 binchecker_window_init(BincheckerWindow * self) {
         gtk_widget_init_template(GTK_WIDGET(self));
 
-        // Set up button click handlers
         g_signal_connect(self -> dir1_button, "clicked", G_CALLBACK(on_dir1_button_clicked), self);
         g_signal_connect(self -> dir2_button, "clicked", G_CALLBACK(on_dir2_button_clicked), self);
         g_signal_connect(self -> scan_button, "clicked", G_CALLBACK(on_scan_button_clicked), self);
-        // Connect row click handler
         g_signal_connect(self -> file_list, "row-activated", G_CALLBACK(on_file_row_clicked), self);
 
 }
