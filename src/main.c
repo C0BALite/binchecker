@@ -26,32 +26,7 @@
 
 #include "libbindiff.h"
 
-#include <libgen.h>
-
 int main (int argc, char *argv[]){
-    char *initial_directory = "/home/coba/Projects/BinChecker/TestInput";
-    int count = 0;
-    int capacity = 0;
-    char **file_paths = NULL;
-    struct diffChunk* diffs = malloc(10 * sizeof(struct diffChunk));
-    char fp1[512], fp2[512]; // Use buffers with sufficient size
-    char *fname;
-    get_all_file_paths(initial_directory, &file_paths, &count, &capacity);
-    printf("Found %d files:\n", count);
-    for (int i = 0; i < count; i++) {
-        fname = basename(file_paths[i]);
-        snprintf(fp1, sizeof(fp1), "/home/coba/Projects/BinChecker/TestInput/%s", fname);
-        snprintf(fp2, sizeof(fp2), "/home/coba/Projects/BinChecker/TestOutput/%s", fname);
-        diffs = compare_files(fp1, fp2, 4);
-        if(diffs != NULL){
-        printf("Chunk %d: pos=%d, length=%d\n", i, diffs[0].pos, diffs[0].length);
-        printf("File1: %s\n", diffs[0].diffFile1);
-        printf("File2: %s\n", diffs[0].diffFile2);
-        }
-        free(file_paths[i]); // Free individual path strings
-    }
-    free(file_paths); // Free the array itself
-
     g_autoptr(BincheckerApplication) app = NULL;
     int ret;
     bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);

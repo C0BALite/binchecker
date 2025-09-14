@@ -111,7 +111,6 @@ struct diffChunk * compare_files(char * fp1, char * fp2, int padding) {
                 interCheck = 0;
                 // Check if read lengths differ or content differs
                 if ((bytesRead1 > 0 && memcmp(dataBlock1, dataBlock2, bytesRead1) != 0)) {
-                        printf("Comparing Files:\n%s\n%s\n", fp1, fp2);
                         while (interCheck < bytesRead1) {
                                 while (dataBlock1[interCheck] != dataBlock2[interCheck]) {
                                         //insert pre-padding
@@ -140,7 +139,6 @@ struct diffChunk * compare_files(char * fp1, char * fp2, int padding) {
                                                 }
                                         }
                                         //fill up a new diff chunk
-                                        printf("\n%07d\tBlock 1: %s\n%07d\tBlock 2: %s\n", interCheck, diffBlock1, interCheck, diffBlock2);
                                         diffs[diffCount].pos = interCheck - currLength;
                                         diffs[diffCount].length = currLength;
                                         diffs[diffCount].diffFile1 = (unsigned char * ) malloc(sizeof(unsigned char) * 3 * (currLength + padding * 2) + 1);
@@ -169,6 +167,10 @@ struct diffChunk * compare_files(char * fp1, char * fp2, int padding) {
         dataBlock1 = dataBlock2 = NULL;
         if (diffCount == 0) {
                 return NULL;
-        }
+        }    // Terminate the array
+    diffs[diffCount].pos = 0;
+    diffs[diffCount].length = 0;
+    diffs[diffCount].diffFile1 = NULL;
+    diffs[diffCount].diffFile2 = NULL;
         return diffs;
 }
