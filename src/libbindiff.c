@@ -70,81 +70,105 @@ void get_all_file_paths(const char * base_path, char ** * file_paths, int * coun
         closedir(dir);
 }
 
-int compare_files(char * fp1, char * fp2, int padding) {
+struct diffChunk * compare_files(char * fp1, char * fp2, int padding) {
         FILE * file1, * file2;
-        size_t bytes_read1, bytes_read2;
+        size_t bytesRead1, bytesRead2;
         struct stat sb;
-        int result = 0; // 0 = identical, 1 = different
-        int intracheck = 0;
-        int file_size = 0;
+        int interCheck = 0;
+        int fileSize = 0;
         int state = 0;
-        char diffblock1[100] = "", diffblock2[100] = "";
-        unsigned char * data_block1, * data_block2;
+        int currLength = 0;
+        int diffCount = 0;
+        int maxDiffs = 10;
+        char diffBlock1[100] = "", diffBlock2[100] = "";
+        unsigned char * dataBlock1, * dataBlock2;
+        struct diffChunk * diffs = malloc(maxDiffs * sizeof(struct diffChunk));
+        if (diffs == NULL) {
+                return NULL;
+        }
+        //symlink discard
         lstat(fp1, & sb);
-        if (S_ISLNK(sb.st_mode)) return -1;
+        if (S_ISLNK(sb.st_mode)) return NULL;
         file1 = fopen(fp1, "rb");
         file2 = fopen(fp2, "rb");
-
+        //Filesize calculation
         fseek(file1, 0, SEEK_END);
-        file_size = ftell(file1);
+        fileSize = ftell(file1);
         rewind(file1);
-        data_block1 = (unsigned char * ) malloc(file_size * sizeof(char));
-        data_block2 = (unsigned char * ) malloc(file_size * sizeof(char));
+
+        dataBlock1 = (unsigned char * ) malloc(fileSize * sizeof(char));
+        dataBlock2 = (unsigned char * ) malloc(fileSize * sizeof(char));
         if (file1 == NULL || file2 == NULL) {
                 printf("Error opening files: %s\n", fp1);
                 if (file1) fclose(file1);
                 if (file2) fclose(file2);
-                return -1; // Error code
+                return NULL;
         }
 
         do {
-                bytes_read1 = fread(data_block1, 1, file_size, file1);
-                bytes_read2 = fread(data_block2, 1, file_size, file2);
-                intracheck = 0;
+                bytesRead1 = fread(dataBlock1, 1, fileSize, file1);
+                bytesRead2 = fread(dataBlock2, 1, fileSize, file2);
+                interCheck = 0;
                 // Check if read lengths differ or content differs
-                if ((bytes_read1 > 0 && memcmp(data_block1, data_block2, bytes_read1) != 0)) {
+                if ((bytesRead1 > 0 && memcmp(dataBlock1, dataBlock2, bytesRead1) != 0)) {
                         printf("Comparing Files:\n%s\n%s\n", fp1, fp2);
-                        while (intracheck < bytes_read1) {
-                                while (data_block1[intracheck] != data_block2[intracheck]) {
+                        while (interCheck < bytesRead1) {
+                                while (dataBlock1[interCheck] != dataBlock2[interCheck]) {
+                                        //insert pre-padding
                                         if (state == 0) {
                                                 for (int i = padding; i > 0; i--) {
-                                                        if (intracheck - i >= 0) {
-                                                                concatHex(data_block1[intracheck - i], diffblock1);
-                                                                concatHex(data_block2[intracheck - i], diffblock2);
+                                                        if (interCheck - i >= 0) {
+                                                                concatHex(dataBlock1[interCheck - i], diffBlock1);
+                                                                concatHex(dataBlock2[interCheck - i], diffBlock2);
                                                         }
                                                 }
                                                 state = 1;
                                         }
-                                        concatHex(data_block1[intracheck], diffblock1);
-                                        concatHex(data_block2[intracheck], diffblock2);
+                                        //insert non-equal bites
+                                        concatHex(dataBlock1[interCheck], diffBlock1);
+                                        concatHex(dataBlock2[interCheck], diffBlock2);
                                         state = 1;
-                                        intracheck++;
+                                        interCheck++;
+                                        currLength++;
                                 }
                                 if (state == 1) {
+                                        //insert post-padding
                                         for (int i = 0; i < padding; i++) {
-                                                if (intracheck + i <= file_size - 1) {
-                                                        concatHex(data_block1[intracheck + i], diffblock1);
-                                                        concatHex(data_block2[intracheck + i], diffblock2);
+                                                if (interCheck + i <= fileSize - 1) {
+                                                        concatHex(dataBlock1[interCheck + i], diffBlock1);
+                                                        concatHex(dataBlock2[interCheck + i], diffBlock2);
                                                 }
                                         }
-                                        printf("\n%07d\tBlock 1: %s\n%07d\tBlock 2: %s\n", intracheck, diffblock1, intracheck, diffblock2);
-                                        memset(diffblock1, 0, sizeof(diffblock1));
-                                        memset(diffblock2, 0, sizeof(diffblock2));
+                                        //fill up a new diff chunk
+                                        printf("\n%07d\tBlock 1: %s\n%07d\tBlock 2: %s\n", interCheck, diffBlock1, interCheck, diffBlock2);
+                                        diffs[diffCount].pos = interCheck - currLength;
+                                        diffs[diffCount].length = currLength;
+                                        diffs[diffCount].diffFile1 = (unsigned char * ) malloc(sizeof(unsigned char) * 3 * (currLength + padding * 2) + 1);
+                                        diffs[diffCount].diffFile2 = (unsigned char * ) malloc(sizeof(unsigned char) * 3 * (currLength + padding * 2) + 1);
+                                        memcpy(diffs[diffCount].diffFile1, diffBlock1, 3 * (currLength + padding * 2) + 1);
+                                        memcpy(diffs[diffCount].diffFile2, diffBlock2, 3 * (currLength + padding * 2) + 1);
+                                        diffCount++;
+                                        //clean up output strings
+                                        memset(diffBlock1, 0, sizeof(diffBlock1));
+                                        memset(diffBlock2, 0, sizeof(diffBlock2));
                                         state = 0;
+                                        currLength = 0;
                                 }
-                                intracheck++;
+                                interCheck++;
                         }
                         printf("\n");
-                        result = 1;
                         break;
                 }
 
-        } while (bytes_read1 > 0 && bytes_read2 > 0);
-
+        } while (bytesRead1 > 0 && bytesRead2 > 0);
+        //post-check cleanup, file closure and a safety check for diffs
         fclose(file1);
         fclose(file2);
-        free(data_block1);
-        free(data_block2);
-        data_block1 = data_block2 = NULL;
-        return result;
+        free(dataBlock1);
+        free(dataBlock2);
+        dataBlock1 = dataBlock2 = NULL;
+        if (diffCount == 0) {
+                return NULL;
+        }
+        return diffs;
 }
