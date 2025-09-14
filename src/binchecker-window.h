@@ -28,4 +28,6 @@ G_BEGIN_DECLS
 
 G_DECLARE_FINAL_TYPE (BincheckerWindow, binchecker_window, BINCHECKER, WINDOW, AdwApplicationWindow)
 
+GtkWidget *binchecker_window_new (GtkApplication *app);
+
 G_END_DECLS

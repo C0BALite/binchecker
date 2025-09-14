@@ -7,9 +7,31 @@
     <property name="default-width">800</property>
     <property name="default-height">600</property>
     <property name="content">
-      <object class="AdwToolbarView">
-        <child type="top">
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child>
           <object class="AdwHeaderBar">
+            <child>
+              <object class="GtkButton" id="dir1_button">
+                <property name="label">Dir 1</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="dir2_button">
+                <property name="label">Dir 2</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="scan_button">
+                <property name="icon-name">view-refresh-symbolic</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="padding_spin">
+                <property name="climb-rate">1.0</property>
+                <property name="numeric">True</property>
+              </object>
+            </child>
             <child type="end">
               <object class="GtkMenuButton">
                 <property name="primary">True</property>
@@ -20,14 +42,19 @@
             </child>
           </object>
         </child>
-        <property name="content">
-          <object class="GtkLabel" id="label">
-            <property name="label" translatable="yes">Hello, World!</property>
-            <style>
-              <class name="title-1"/>
-            </style>
+        <child>
+          <object class="GtkScrolledWindow">
+            <child>
+              <object class="AdwClamp">
+                <child>
+                  <object class="GtkListBox" id="file_list">
+                    <property name="vexpand">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
           </object>
-        </property>
+        </child>
       </object>
     </property>
   </template>

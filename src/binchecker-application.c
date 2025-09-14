@@ -54,9 +54,7 @@ binchecker_application_activate (GApplication *app)
 	window = gtk_application_get_active_window (GTK_APPLICATION (app));
 
 	if (window == NULL)
-		window = g_object_new (BINCHECKER_TYPE_WINDOW,
-		                       "application", app,
-		                       NULL);
+		window = GTK_WINDOW(binchecker_window_new (GTK_APPLICATION (app)));
 
 	gtk_window_present (window);
 }
@@ -85,11 +83,11 @@ binchecker_application_about_action (GSimpleAction *action,
 	adw_show_about_dialog (GTK_WIDGET (window),
 	                       "application-name", "binchecker",
 	                       "application-icon", "org.gnome.BinChecker",
-	                       "developer-name", "Unknown",
+	                       "developer-name", "C0BA",
 	                       "translator-credits", _("translator-credits"),
 	                       "version", "0.1.0",
 	                       "developers", developers,
-	                       "copyright", "© 2025 Unknown",
+	                       "copyright", "© 2025",
 	                       NULL);
 }
 
