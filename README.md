@@ -1,50 +1,43 @@
-<h1 align="center" id="title">BinDiff</h1>
+BinDiff
+=======
 
 A description of this project.
-<p id="description">This application is written using gtk/adw in C language using GNOME Builder. The application uses a shared library libbindiff.so. It compares files in two separate directories, finds differences in binary data and displays them. Symbolic links, nonexistent files and files requiring permission are skipped.</p> Usage:
 
--Run the application
+This application is written using gtk/adw in C language. The application uses a shared library libbindiff.so. It compares files in two separate directories, finds differences in binary data and displays them. Symbolic links, nonexistent files and files requiring permission are skipped.
 
--Select two folders using the Dir1 and Dir2 buttons
+Usage: 
 
--Press the scan button (the one with the refresh icon)
+-Run the application 
 
--Afterwards all of the corrupted files will be listed in the main window
+-Select two folders using the folder buttons
 
--To access specific information about a file select it in the list
+-Press the scan button 
 
--Padding can be added to the sides of of the corrupted portion of data if need be. To select the amount of padding (in bytes) increase or decrease the number in the spinbox to the right of the scan button
+-Afterwards all of the corrupted files will be listed on a new page in a list format 
 
-The application has been tested and runs on Alt Regular GNOME. App tested using file_scrambler.py.
+-To access specific information about a file select it in the list 
 
-<h2> Installation Steps:</h2>
+-Padding can be added to the sides of of the corrupted portion of data if need be. To select the amount of padding (in bytes) increase or decrease the number in the spinbox.
 
-<p>1. Install the required dependencies</p>
+The application has been tested and runs on Alt Regular GNOME.
 
-```
-sudo apt-get install meson gcc gtk4-devel libadwaita-devel
-```
+Installation Steps:
+-------------------
 
-<p>2. Open project directory</p>
+1\. Install the required dependencies
 
-```
-cd bindiff
-```
+``` sudo apt-get install meson gcc gtk4-devel libadwaita-devel ```
 
-<p>3. Configure the build directory</p>
+2\. Open project directory
 
-```
-meson setup build
-```
+``` cd bindiff ```
 
-<p>4. Compile the project</p>
+3\. Configure the build directory
 
-```
-meson compile -C build
-```
+``` meson setup build ```
 
-<p>5. Run the app</p>
+4\. Install the app
 
-```
-./build/src/bindiff
-```
+``` meson install -C build ```
+
+5\. Run the app from the applications menu
