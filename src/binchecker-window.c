@@ -31,9 +31,12 @@ struct _BincheckerWindow {
         GtkButton * dir1_button;
         GtkButton * dir2_button;
         GtkButton * scan_button;
-        GtkSpinButton * padding_spin;
+        AdwSpinRow * padding_spin;
         GtkListBox * file_list;
-
+        AdwNavigationPage * results_page;
+        AdwNavigationView * navigation_view;
+        AdwActionRow * original_ar;
+        AdwActionRow * corrupted_ar;
         /* State */
         char * dir1_path;
         char * dir2_path;
@@ -112,7 +115,7 @@ show_diff_dialog(BincheckerWindow * self,
 
                 const char * file1_hex = diffs[i].diffFile1 ? (const char * ) diffs[i].diffFile1 : "NULL";
                 const char * file2_hex = diffs[i].diffFile2 ? (const char * ) diffs[i].diffFile2 : "NULL";
-
+                printf("%s",diffs[i].diffFile1);
                 snprintf(diff_text, sizeof(diff_text),
                         "Difference %d:\nPosition: %d\nLength: %d bytes\n\nFile 1: %s\nFile 2: %s",
                         i + 1,
@@ -120,7 +123,6 @@ show_diff_dialog(BincheckerWindow * self,
                         diffs[i].length,
                         file1_hex,
                         file2_hex);
-
                 frame_content = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
                 gtk_widget_set_hexpand(frame_content, TRUE);
 
@@ -131,7 +133,7 @@ show_diff_dialog(BincheckerWindow * self,
                 gtk_label_set_yalign(GTK_LABEL(diff_label), 0.0);
                 gtk_widget_set_hexpand(diff_label, TRUE);
                 gtk_widget_set_halign(diff_label, GTK_ALIGN_FILL);
-
+                gtk_label_set_markup(GTK_LABEL(diff_label), diff_text);
                 gtk_box_append(GTK_BOX(frame_content), diff_label);
 
                 frame = gtk_frame_new(NULL);
@@ -186,7 +188,7 @@ on_dir1_folder_selected(GObject * source, GAsyncResult * result, gpointer user_d
         if (file) {
                 if (self -> dir1_path) g_free(self -> dir1_path);
                 self -> dir1_path = g_file_get_path(file);
-                gtk_button_set_label(GTK_BUTTON(self -> dir1_button), g_path_get_basename(self -> dir1_path));
+                adw_action_row_set_subtitle(self->original_ar, self -> dir1_path);
                 g_object_unref(file);
         }
 }
@@ -199,7 +201,7 @@ on_dir2_folder_selected(GObject * source, GAsyncResult * result, gpointer user_d
         if (file) {
                 if (self -> dir2_path) g_free(self -> dir2_path);
                 self -> dir2_path = g_file_get_path(file);
-                gtk_button_set_label(GTK_BUTTON(self -> dir2_button), g_path_get_basename(self -> dir2_path));
+                adw_action_row_set_subtitle(self->corrupted_ar, self -> dir2_path);
                 g_object_unref(file);
         }
 }
@@ -265,11 +267,11 @@ on_scan_button_clicked(GtkButton * button, BincheckerWindow * self) {
                 self -> file_diffs = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, free_diff_chunk);
         }
 
-        // Get file lists from both directories
+        // Get file list
         get_all_file_paths(self -> dir1_path, & files1, & count1, & capacity1);
 
         // Get padding value
-        padding_value = gtk_spin_button_get_value(self -> padding_spin);
+        padding_value = adw_spin_row_get_value(self -> padding_spin);
         padding = (int) padding_value;
 
         for (i = 0; i < count1; i++) {
@@ -277,7 +279,7 @@ on_scan_button_clicked(GtkButton * button, BincheckerWindow * self) {
                 char fp1[512], fp2[512];
                 struct diffChunk * diffs;
 
-                // Find matching file in second directory
+                // Construct filepaths
                 basename = g_path_get_basename(files1[i]);
                 snprintf(fp1, sizeof(fp1), "%s/%s", self -> dir1_path, basename);
                 snprintf(fp2, sizeof(fp2), "%s/%s", self -> dir2_path, basename);
@@ -306,6 +308,7 @@ on_scan_button_clicked(GtkButton * button, BincheckerWindow * self) {
         // Cleanup
         for (i = 0; i < count1; i++) free(files1[i]);
         free(files1);
+        adw_navigation_view_push(self->navigation_view, self->results_page);
 }
 
 static void
@@ -331,7 +334,11 @@ binchecker_window_class_init(BincheckerWindowClass * klass) {
         gtk_widget_class_bind_template_child(widget_class, BincheckerWindow, dir2_button);
         gtk_widget_class_bind_template_child(widget_class, BincheckerWindow, scan_button);
         gtk_widget_class_bind_template_child(widget_class, BincheckerWindow, padding_spin);
+        gtk_widget_class_bind_template_child(widget_class, BincheckerWindow, navigation_view);
+        gtk_widget_class_bind_template_child(widget_class, BincheckerWindow, results_page);
         gtk_widget_class_bind_template_child(widget_class, BincheckerWindow, file_list);
+        gtk_widget_class_bind_template_child(widget_class, BincheckerWindow, original_ar);
+        gtk_widget_class_bind_template_child(widget_class, BincheckerWindow, corrupted_ar);
 }
 
 static void
@@ -342,14 +349,9 @@ binchecker_window_init(BincheckerWindow * self) {
         g_signal_connect(self -> dir1_button, "clicked", G_CALLBACK(on_dir1_button_clicked), self);
         g_signal_connect(self -> dir2_button, "clicked", G_CALLBACK(on_dir2_button_clicked), self);
         g_signal_connect(self -> scan_button, "clicked", G_CALLBACK(on_scan_button_clicked), self);
-
         // Connect row click handler
         g_signal_connect(self -> file_list, "row-activated", G_CALLBACK(on_file_row_clicked), self);
 
-        // Set up padding spinbox properly
-        gtk_spin_button_set_range(self -> padding_spin, 0, 100);
-        gtk_spin_button_set_increments(self -> padding_spin, 1, 5);
-        gtk_spin_button_set_value(self -> padding_spin, 3);
 }
 
 GtkWidget *
