@@ -24,8 +24,6 @@
 
 #include "binchecker-application.h"
 
-#include "libbindiff.h"
-
 int main (int argc, char *argv[]){
     g_autoptr(BincheckerApplication) app = NULL;
     int ret;
