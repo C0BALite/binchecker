@@ -26,7 +26,7 @@ Installation Steps:
 
 1\. Install the required dependencies
 
-``` sudo apt-get install meson gcc gtk4-devel libadwaita-devel ```
+``` sudo apt-get install meson gcc libgtk4-devel libadwaita-devel ```
 
 2\. Open project directory
 
