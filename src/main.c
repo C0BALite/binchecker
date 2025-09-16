@@ -31,7 +31,7 @@ int main (int argc, char *argv[]){
     bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
     textdomain (GETTEXT_PACKAGE);
 
-    app = binchecker_application_new ("org.gnome.BinChecker", G_APPLICATION_DEFAULT_FLAGS);
+    app = binchecker_application_new ("io.github.BinChecker", G_APPLICATION_DEFAULT_FLAGS);
     ret = g_application_run (G_APPLICATION (app), argc, argv);
     return ret;
 }

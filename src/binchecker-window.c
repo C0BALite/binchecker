@@ -322,7 +322,7 @@ binchecker_window_class_init(BincheckerWindowClass * klass) {
 
         object_class -> dispose = binchecker_window_dispose;
 
-        gtk_widget_class_set_template_from_resource(widget_class, "/org/gnome/BinChecker/binchecker-window.ui");
+        gtk_widget_class_set_template_from_resource(widget_class, "/io/github/BinChecker/binchecker-window.ui");
         gtk_widget_class_bind_template_child(widget_class, BincheckerWindow, dir1_button);
         gtk_widget_class_bind_template_child(widget_class, BincheckerWindow, dir2_button);
         gtk_widget_class_bind_template_child(widget_class, BincheckerWindow, scan_button);

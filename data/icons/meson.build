@@ -1,4 +1,4 @@
-application_id = 'org.gnome.BinChecker'
+application_id = 'io.github.BinChecker'
 
 scalable_dir = 'hicolor' / 'scalable' / 'apps'
 install_data(

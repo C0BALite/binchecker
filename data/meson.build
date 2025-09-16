@@ -1,6 +1,6 @@
 desktop_file = i18n.merge_file(
-        input: 'org.gnome.BinChecker.desktop.in',
-       output: 'org.gnome.BinChecker.desktop',
+        input: 'io.github.BinChecker.desktop.in',
+       output: 'io.github.BinChecker.desktop',
          type: 'desktop',
        po_dir: '../po',
       install: true,
@@ -13,8 +13,8 @@ if desktop_utils.found()
 endif
 
 appstream_file = i18n.merge_file(
-        input: 'org.gnome.BinChecker.metainfo.xml.in',
-       output: 'org.gnome.BinChecker.metainfo.xml',
+        input: 'io.github.BinChecker.metainfo.xml.in',
+       output: 'io.github.BinChecker.metainfo.xml',
        po_dir: '../po',
       install: true,
   install_dir: get_option('datadir') / 'metainfo'
@@ -37,8 +37,8 @@ test('Validate schema file',
 service_conf = configuration_data()
 service_conf.set('bindir', get_option('prefix') / get_option('bindir'))
 configure_file(
-  input: 'org.gnome.BinChecker.service.in',
-  output: 'org.gnome.BinChecker.service',
+  input: 'io.github.BinChecker.service.in',
+  output: 'io.github.BinChecker.service',
   configuration: service_conf,
   install_dir: get_option('datadir') / 'dbus-1' / 'services'
 )

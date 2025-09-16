@@ -40,7 +40,7 @@ binchecker_application_new (const char        *application_id,
 	return g_object_new (BINCHECKER_TYPE_APPLICATION,
 	                     "application-id", application_id,
 	                     "flags", flags,
-	                     "resource-base-path", "/org/gnome/BinChecker",
+	                     "resource-base-path", "/io/github/BinChecker",
 	                     NULL);
 }
 
@@ -82,7 +82,7 @@ binchecker_application_about_action (GSimpleAction *action,
 
 	adw_show_about_dialog (GTK_WIDGET (window),
 	                       "application-name", "binchecker",
-	                       "application-icon", "org.gnome.BinChecker",
+	                       "application-icon", "io.github.BinChecker",
 	                       "developer-name", "C0BA",
 	                       "translator-credits", _("translator-credits"),
 	                       "version", "0.1.0",

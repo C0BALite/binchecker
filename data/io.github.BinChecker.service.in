@@ -1,3 +1,3 @@
 [D-BUS Service]
-Name=org.gnome.BinChecker
+Name=io.github.BinChecker
 Exec=@bindir@/binchecker --gapplication-service

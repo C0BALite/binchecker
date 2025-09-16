@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=binchecker
-Exec=binchecker
-Icon=org.gnome.BinChecker
+Name=BinChecker
+Exec=BinChecker
+Icon=io.github.BinChecker
 Terminal=false
 Type=Application
 Categories=Utility;

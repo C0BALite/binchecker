@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="binchecker">
-	<schema id="org.gnome.BinChecker" path="/org/gnome/BinChecker/">
+	<schema id="io.github.BinChecker" path="/io/github/BinChecker/">
 	</schema>
 </schemalist>
