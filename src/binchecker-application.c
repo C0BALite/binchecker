@@ -1,6 +1,6 @@
 /* binchecker-application.c
  *
- * Copyright 2025 Unknown
+ * Copyright 2025 C0BA
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -87,7 +87,7 @@ binchecker_application_about_action (GSimpleAction *action,
 	                       "translator-credits", _("translator-credits"),
 	                       "version", "0.1.0",
 	                       "developers", developers,
-	                       "copyright", "© 2025",
+	                       "copyright", "© 2025 C0BA",
 	                       NULL);
 }
 
