@@ -113,7 +113,6 @@ show_diff_dialog(BincheckerWindow * self,
 
                 const char * file1_hex = diffs[i].diffFile1 ? (const char * ) diffs[i].diffFile1 : "NULL";
                 const char * file2_hex = diffs[i].diffFile2 ? (const char * ) diffs[i].diffFile2 : "NULL";
-                printf("%s",diffs[i].diffFile1);
                 snprintf(diff_text, sizeof(diff_text),
                         "Difference %d:\nPosition: %d\nLength: %d bytes\n\nFile 1: %s\nFile 2: %s",
                         i + 1,
