@@ -9,7 +9,7 @@
       <object class="AdwNavigationView" id="navigation_view">
         <child>
           <object class="AdwNavigationPage">
-            <property name="title">BinChecker</property>
+            <property name="title" translatable="yes" context="window-title">BinChecker</property>
             <child>
               <object class="GtkBox">
                 <property name="orientation">vertical</property>
@@ -20,7 +20,7 @@
                         <property name="icon-name">open-menu-symbolic</property>
                         <property name="menu-model">primary_menu</property>
                         <property name="primary">True</property>
-                        <property name="tooltip-text" translatable="yes">Main Menu</property>
+                        <property name="tooltip-text" translatable="yes" context="tooltip|main-menu">Main Menu</property>
                       </object>
                     </child>
                   </object>
@@ -31,18 +31,19 @@
                       <object class="AdwPreferencesPage">
                         <child>
                           <object class="AdwPreferencesGroup">
-                            <property name="title">Directory selection</property>
+                            <property name="title" translatable="yes" context="group-title|directory-selection">Directory selection</property>
                             <child>
                               <object class="AdwPreferencesRow">
                                 <child>
                                   <object class="AdwActionRow" id="original_ar">
-                                    <property name="subtitle">Choose directory</property>
-                                    <property name="title">First directory</property>
+                                    <property name="subtitle" translatable="yes" context="row-subtitle|choose-directory">Choose directory</property>
+                                    <property name="title" translatable="yes" context="row-title|first-directory">First directory</property>
                                     <child>
                                       <object class="GtkButton" id="dir1_button">
                                         <property name="halign">center</property>
                                         <property name="icon-name">folder-open-symbolic</property>
                                         <property name="valign">center</property>
+                                        <property name="tooltip-text" translatable="yes" context="tooltip|select-first-dir">Select first directory</property>
                                       </object>
                                     </child>
                                   </object>
@@ -53,13 +54,14 @@
                               <object class="AdwPreferencesRow">
                                 <child>
                                   <object class="AdwActionRow" id="corrupted_ar">
-                                    <property name="subtitle">Choose directory</property>
-                                    <property name="title">Second directory</property>
+                                    <property name="subtitle" translatable="yes" context="row-subtitle|choose-directory">Choose directory</property>
+                                    <property name="title" translatable="yes" context="row-title|second-directory">Second directory</property>
                                     <child>
                                       <object class="GtkButton" id="dir2_button">
                                         <property name="halign">center</property>
                                         <property name="icon-name">folder-open-symbolic</property>
                                         <property name="valign">center</property>
+                                        <property name="tooltip-text" translatable="yes" context="tooltip|select-second-dir">Select second directory</property>
                                       </object>
                                     </child>
                                   </object>
@@ -72,8 +74,8 @@
                           <object class="AdwPreferencesGroup">
                             <child>
                               <object class="AdwActionRow">
-                                <property name="subtitle">amount of bytes to pad the corrupted bytes with</property>
-                                <property name="title">Padding amount</property>
+                                <property name="subtitle" translatable="yes" context="row-subtitle|padding-amount">amount of bytes to pad the corrupted bytes with</property>
+                                <property name="title" translatable="yes" context="row-title|padding-amount">Padding amount</property>
                                 <child>
                                   <object class="AdwSpinRow" id="padding_spin">
                                     <property name="adjustment">
@@ -85,6 +87,7 @@
                                         <property name="value">4</property>
                                       </object>
                                     </property>
+                                    <property name="tooltip-text" translatable="yes" context="tooltip|padding-amount">Set the padding amount for corrupted bytes</property>
                                   </object>
                                 </child>
                               </object>
@@ -95,8 +98,8 @@
                           <object class="AdwPreferencesGroup">
                             <child>
                               <object class="GtkButton" id="scan_button">
-                                <property name="icon-name">org.gnome.Calculator-symbolic</property>
-                                <property name="label">Compare folders</property>
+                                <property name="label" translatable="yes" context="button-label|compare-folders">Compare folders</property>
+                                <property name="tooltip-text" translatable="yes" context="tooltip|compare-folders">Start comparing the selected directories</property>
                               </object>
                             </child>
                           </object>
@@ -111,7 +114,7 @@
         </child>
         <child>
           <object class="AdwNavigationPage" id="results_page">
-            <property name="title">Results</property>
+            <property name="title" translatable="yes" context="page-title|results">Results</property>
             <child>
               <object class="AdwToolbarView">
                 <property name="content">
@@ -130,7 +133,7 @@
                     </child>
                   </object>
                 </property>
-                <property name="name">Result</property>
+                <property name="name" translatable="yes" context="view-name|results">Result</property>
                 <child type="top">
                   <object class="AdwHeaderBar">
                     <property name="focus-on-click">False</property>
@@ -145,21 +148,21 @@
     </property>
     <property name="default-height">600</property>
     <property name="default-width">800</property>
-    <property name="title" translatable="yes">BinChecker</property>
+    <property name="title" translatable="yes" context="window-title">BinChecker</property>
   </template>
   <menu id="primary_menu">
     <section>
       <item>
         <attribute name="action">app.preferences</attribute>
-        <attribute name="label" translatable="yes">_Preferences</attribute>
+        <attribute name="label" translatable="yes" context="menu-item">_Preferences</attribute>
       </item>
       <item>
         <attribute name="action">win.show-help-overlay</attribute>
-        <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
+        <attribute name="label" translatable="yes" context="menu-item">_Keyboard Shortcuts</attribute>
       </item>
       <item>
         <attribute name="action">app.about</attribute>
-        <attribute name="label" translatable="yes">_About BinChecker</attribute>
+        <attribute name="label" translatable="yes" context="menu-item">_About BinChecker</attribute>
       </item>
     </section>
   </menu>

@@ -1,0 +1,155 @@
+# Binchecker.
+# Copyright (C) 2025 C0BA
+# This file is distributed under the same license as the binchecker package.
+# С0BALite <asdfmoovie123321@gmail.com>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: binchecker\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-18 14:10+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: С0BALite <asdfmoovie123321@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data/io.github.BinChecker.desktop.in:3
+#: data/io.github.BinChecker.metainfo.xml.in:7
+msgid "BinChecker"
+msgstr ""
+
+#: data/io.github.BinChecker.desktop.in:9
+msgid "GTK;"
+msgstr ""
+
+#: data/io.github.BinChecker.metainfo.xml.in:8
+msgid "Application which checks binaries for errors"
+msgstr ""
+
+#: data/io.github.BinChecker.metainfo.xml.in:10
+msgid ""
+"This application is written using gtk/adw in C language. The application "
+"uses a shared library libbindiff.so. It compares files in two separate "
+"directories, finds differences in binary data and displays them. Symbolic "
+"links, nonexistent files and files requiring permission are skipped."
+msgstr ""
+
+#: src/binchecker-diff-dialog.c:80
+#, c-format
+msgid ""
+"Difference %d:\n"
+"Position: %d\n"
+"Length: %d bytes\n"
+"\n"
+"File 1: %s\n"
+"File 2: %s"
+msgstr ""
+
+#: src/binchecker-diff-dialog.c:120
+#, c-format
+msgid "Differences in: %s"
+msgstr ""
+
+#: src/binchecker-dialog.ui:7
+msgctxt "dialog-title"
+msgid "File Differences"
+msgstr ""
+
+#: src/binchecker-dialog.ui:53
+msgctxt "button"
+msgid "Close"
+msgstr ""
+
+#: src/binchecker-window.ui:12 src/binchecker-window.ui:151
+msgctxt "window-title"
+msgid "BinChecker"
+msgstr ""
+
+#: src/binchecker-window.ui:23
+msgctxt "tooltip|main-menu"
+msgid "Main Menu"
+msgstr ""
+
+#: src/binchecker-window.ui:34
+msgctxt "group-title|directory-selection"
+msgid "Directory selection"
+msgstr ""
+
+#: src/binchecker-window.ui:39 src/binchecker-window.ui:57
+msgctxt "row-subtitle|choose-directory"
+msgid "Choose directory"
+msgstr ""
+
+#: src/binchecker-window.ui:40
+msgctxt "row-title|first-directory"
+msgid "First directory"
+msgstr ""
+
+#: src/binchecker-window.ui:46
+msgctxt "tooltip|select-first-dir"
+msgid "Select first directory"
+msgstr ""
+
+#: src/binchecker-window.ui:58
+msgctxt "row-title|second-directory"
+msgid "Second directory"
+msgstr ""
+
+#: src/binchecker-window.ui:64
+msgctxt "tooltip|select-second-dir"
+msgid "Select second directory"
+msgstr ""
+
+#: src/binchecker-window.ui:77
+msgctxt "row-subtitle|padding-amount"
+msgid "amount of bytes to pad the corrupted bytes with"
+msgstr ""
+
+#: src/binchecker-window.ui:78
+msgctxt "row-title|padding-amount"
+msgid "Padding amount"
+msgstr ""
+
+#: src/binchecker-window.ui:90
+msgctxt "tooltip|padding-amount"
+msgid "Set the padding amount for corrupted bytes"
+msgstr ""
+
+#: src/binchecker-window.ui:101
+msgctxt "button-label|compare-folders"
+msgid "Compare folders"
+msgstr ""
+
+#: src/binchecker-window.ui:102
+msgctxt "tooltip|compare-folders"
+msgid "Start comparing the selected directories"
+msgstr ""
+
+#: src/binchecker-window.ui:117
+msgctxt "page-title|results"
+msgid "Results"
+msgstr ""
+
+#: src/binchecker-window.ui:136
+msgctxt "view-name|results"
+msgid "Result"
+msgstr ""
+
+#: src/binchecker-window.ui:157
+msgctxt "menu-item"
+msgid "_Preferences"
+msgstr ""
+
+#: src/binchecker-window.ui:161
+msgctxt "menu-item"
+msgid "_Keyboard Shortcuts"
+msgstr ""
+
+#: src/binchecker-window.ui:165
+msgctxt "menu-item"
+msgid "_About BinChecker"
+msgstr ""
