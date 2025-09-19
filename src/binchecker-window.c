@@ -22,8 +22,6 @@
 
 #include "binchecker-window.h"
 
-#include "libbindiff.h"
-
 struct _BincheckerWindow {
         AdwApplicationWindow parent_instance;
 
@@ -46,120 +44,11 @@ struct _BincheckerWindow {
 G_DEFINE_FINAL_TYPE(BincheckerWindow, binchecker_window, ADW_TYPE_APPLICATION_WINDOW)
 
 static void
-show_diff_dialog(BincheckerWindow * self,
-        const char * filename, struct diffChunk * diffs) {
-        GtkWidget * dialog;
-        GtkWidget * scrolled_window;
-        GtkWidget * box;
-        char header[256];
-        GtkWidget * header_label;
-        GtkWidget * separator;
-        int diff_count;
-        int i;
-        GtkWidget * content_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 12);
-        GtkWidget * button_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 6);
-        GtkWidget * close_button = gtk_button_new_with_label("Close");
-
-        dialog = adw_window_new();
-        gtk_window_set_title(GTK_WINDOW(dialog), "File Differences");
-        gtk_window_set_modal(GTK_WINDOW(dialog), TRUE);
-        gtk_window_set_transient_for(GTK_WINDOW(dialog), GTK_WINDOW(self));
-        gtk_window_set_default_size(GTK_WINDOW(dialog), 700, 500);
-
-        // Create main content box
-        gtk_widget_set_hexpand(content_box, TRUE);
-        gtk_widget_set_vexpand(content_box, TRUE);
-        gtk_widget_set_margin_top(content_box, 12);
-        gtk_widget_set_margin_bottom(content_box, 12);
-        gtk_widget_set_margin_start(content_box, 12);
-        gtk_widget_set_margin_end(content_box, 12);
-
-        // Add filename header
-        snprintf(header, sizeof(header), "Differences in: %s", filename);
-        header_label = gtk_label_new(header);
-        gtk_widget_add_css_class(header_label, "title-3");
-        gtk_widget_set_halign(header_label, GTK_ALIGN_START);
-        gtk_box_append(GTK_BOX(content_box), header_label);
-
-        // Add separator
-        separator = gtk_separator_new(GTK_ORIENTATION_HORIZONTAL);
-        gtk_box_append(GTK_BOX(content_box), separator);
-
-        // Create scrolled window for diff content
-        scrolled_window = gtk_scrolled_window_new();
-        gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window),
-                GTK_POLICY_AUTOMATIC,
-                GTK_POLICY_AUTOMATIC);
-        gtk_widget_set_hexpand(scrolled_window, TRUE);
-        gtk_widget_set_vexpand(scrolled_window, TRUE);
-
-        // Create box for diff items
-        box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
-        gtk_widget_set_hexpand(box, TRUE);
-
-        diff_count = 0;
-        if (diffs) {
-                while (diff_count < 10 && (diffs[diff_count].pos != 0 || diffs[diff_count].length != 0 ||
-                                diffs[diff_count].diffFile1 != NULL || diffs[diff_count].diffFile2 != NULL)) {
-                        diff_count++;
-                }
-        }
-
-        for (i = 0; i < diff_count; i++) {
-                char diff_text[1024];
-                GtkWidget * diff_label;
-                GtkWidget * frame;
-                GtkWidget * frame_content;
-
-                const char * file1_hex = diffs[i].diffFile1 ? (const char * ) diffs[i].diffFile1 : "NULL";
-                const char * file2_hex = diffs[i].diffFile2 ? (const char * ) diffs[i].diffFile2 : "NULL";
-                snprintf(diff_text, sizeof(diff_text),
-                        "Difference %d:\nPosition: %d\nLength: %d bytes\n\nFile 1: %s\nFile 2: %s",
-                        i + 1,
-                        diffs[i].pos,
-                        diffs[i].length,
-                        file1_hex,
-                        file2_hex);
-                frame_content = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-                gtk_widget_set_hexpand(frame_content, TRUE);
-
-                diff_label = gtk_label_new(diff_text);
-                gtk_label_set_selectable(GTK_LABEL(diff_label), TRUE);
-                gtk_label_set_wrap(GTK_LABEL(diff_label), TRUE);
-                gtk_label_set_xalign(GTK_LABEL(diff_label), 0.0);
-                gtk_label_set_yalign(GTK_LABEL(diff_label), 0.0);
-                gtk_widget_set_hexpand(diff_label, TRUE);
-                gtk_widget_set_halign(diff_label, GTK_ALIGN_FILL);
-                gtk_label_set_markup(GTK_LABEL(diff_label), diff_text);
-                gtk_box_append(GTK_BOX(frame_content), diff_label);
-
-                frame = gtk_frame_new(NULL);
-                gtk_widget_set_margin_top(frame, 6);
-                gtk_widget_set_margin_bottom(frame, 6);
-                gtk_widget_set_hexpand(frame, TRUE);
-                gtk_frame_set_child(GTK_FRAME(frame), frame_content);
-
-                gtk_box_append(GTK_BOX(box), frame);
-        }
-        if (diff_count < 10) {
-                GtkWidget * spacer = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
-                gtk_widget_set_vexpand(spacer, TRUE);
-                gtk_box_append(GTK_BOX(box), spacer);
-        }
-
-        gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scrolled_window), box);
-        gtk_box_append(GTK_BOX(content_box), scrolled_window);
-
-        gtk_widget_set_halign(button_box, GTK_ALIGN_END);
-        gtk_widget_set_margin_top(button_box, 12);
-
-        g_signal_connect_swapped(close_button, "clicked", G_CALLBACK(gtk_window_destroy), dialog);
-        gtk_box_append(GTK_BOX(button_box), close_button);
-
-        gtk_box_append(GTK_BOX(content_box), button_box);
-
-        adw_window_set_content(ADW_WINDOW(dialog), content_box);
-        gtk_window_present(GTK_WINDOW(dialog));
+show_diff_dialog(BincheckerWindow *self, const char *filename, struct diffChunk *diffs)
+{
+    BincheckerDiffDialog *dialog = binchecker_diff_dialog_new(GTK_WINDOW(self));
+    binchecker_diff_dialog_set_data(dialog, filename, diffs);
+    gtk_window_present(GTK_WINDOW(dialog));
 }
 
 static void
@@ -206,7 +95,7 @@ on_dir2_folder_selected(GObject * source, GAsyncResult * result, gpointer user_d
 static void
 on_dir1_button_clicked(GtkButton * button, BincheckerWindow * self) {
         GtkFileDialog * dialog = gtk_file_dialog_new();
-        gtk_file_dialog_set_title(dialog, "Select First Directory");
+        gtk_file_dialog_set_title(dialog, _("Select First Directory"));
         gtk_file_dialog_set_modal(dialog, TRUE);
 
         gtk_file_dialog_select_folder(dialog, GTK_WINDOW(self), NULL, on_dir1_folder_selected, self);
@@ -215,7 +104,7 @@ on_dir1_button_clicked(GtkButton * button, BincheckerWindow * self) {
 static void
 on_dir2_button_clicked(GtkButton * button, BincheckerWindow * self) {
         GtkFileDialog * dialog = gtk_file_dialog_new();
-        gtk_file_dialog_set_title(dialog, "Select Second Directory");
+        gtk_file_dialog_set_title(dialog, _("Select Second Directory"));
         gtk_file_dialog_set_modal(dialog, TRUE);
 
         gtk_file_dialog_select_folder(dialog, GTK_WINDOW(self), NULL, on_dir2_folder_selected, self);
@@ -246,28 +135,20 @@ on_scan_button_clicked(GtkButton * button, BincheckerWindow * self) {
         int i;
 
         if (!self -> dir1_path || !self -> dir2_path) {
-                GtkAlertDialog * dialog = gtk_alert_dialog_new("Please select both directories first");
+                GtkAlertDialog * dialog = gtk_alert_dialog_new(_("Please select both directories first"));
                 gtk_alert_dialog_show(dialog, GTK_WINDOW(self));
                 g_object_unref(dialog);
                 return;
         }
-
-        // Clear previous results
         while ((child = gtk_widget_get_first_child(GTK_WIDGET(self -> file_list)))) {
                 gtk_list_box_remove(self -> file_list, child);
         }
-
-        // Clear previous diffs
         if (self -> file_diffs) {
                 g_hash_table_remove_all(self -> file_diffs);
         } else {
                 self -> file_diffs = g_hash_table_new_full(g_str_hash, g_str_equal, g_free, free_diff_chunk);
         }
-
-        // Get file list
         get_all_file_paths(self -> dir1_path, & files1, & count1, & capacity1);
-
-        // Get padding value
         padding_value = adw_spin_row_get_value(self -> padding_spin);
         padding = (int) padding_value;
 

@@ -2,6 +2,7 @@ binchecker_sources = [
   'main.c',
   'binchecker-application.c',
   'binchecker-window.c',
+  'binchecker-diff-dialog.c'
 ]
 
 libbindiff_inc = include_directories('/usr/local/include/libbindiff')

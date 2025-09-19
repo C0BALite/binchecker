@@ -1,4 +1,4 @@
-/* binchecker-window.h
+/* binchecker-diff-dialog.h
  *
  * Copyright 2025 C0BA
  *
@@ -20,16 +20,19 @@
 
 #pragma once
 
+#include <gtk/gtk.h>
 #include <adwaita.h>
-
-#include "binchecker-diff-dialog.h"
+#include "libbindiff.h"
+#include <glib/gi18n.h>
 
 G_BEGIN_DECLS
 
-#define BINCHECKER_TYPE_WINDOW (binchecker_window_get_type())
+#define BINCHECKER_TYPE_DIFF_DIALOG (binchecker_diff_dialog_get_type())
+G_DECLARE_FINAL_TYPE(BincheckerDiffDialog, binchecker_diff_dialog, BINCHECKER, DIFF_DIALOG, AdwWindow)
 
-G_DECLARE_FINAL_TYPE (BincheckerWindow, binchecker_window, BINCHECKER, WINDOW, AdwApplicationWindow)
-
-GtkWidget *binchecker_window_new (GtkApplication *app);
+BincheckerDiffDialog *binchecker_diff_dialog_new(GtkWindow *parent);
+void binchecker_diff_dialog_set_data(BincheckerDiffDialog *dialog,
+                                    const char *filename,
+                                    struct diffChunk *diffs);
 
 G_END_DECLS
