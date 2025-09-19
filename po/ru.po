@@ -1,0 +1,165 @@
+# Russian translations for binchecker package.
+# Copyright (C) 2025 C0BA
+# This file is distributed under the same license as the binchecker package.
+#  <coba@intel-285f1b>, 2025.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: binchecker\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-18 14:07+0300\n"
+"PO-Revision-Date: 2025-09-18 14:07+0300\n"
+"Last-Translator:  <coba@intel-285f1b>\n"
+"Language-Team: Russian <gnu@d07.ru>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: data/io.github.BinChecker.desktop.in:3
+#: data/io.github.BinChecker.metainfo.xml.in:7
+msgid "BinChecker"
+msgstr "BinChecker"
+
+#: data/io.github.BinChecker.desktop.in:9
+msgid "GTK;"
+msgstr "GTK;"
+
+#: data/io.github.BinChecker.metainfo.xml.in:8
+msgid "Application which checks binaries for errors"
+msgstr "Приложение, проверяющее двоичные файлы на ошибки"
+
+#: data/io.github.BinChecker.metainfo.xml.in:10
+msgid ""
+"This application is written using gtk/adw in C language. The application "
+"uses a shared library libbindiff.so. It compares files in two separate "
+"directories, finds differences in binary data and displays them. Symbolic "
+"links, nonexistent files and files requiring permission are skipped."
+msgstr ""
+"Приложение написано с использованием gtk/adw на языке C. Приложение использует "
+"разделяемую библиотеку libbindiff.so. Оно сравнивает файлы в двух различных "
+"директориях, ищет несовпадения в двоичных данных и показывает их. Символьные "
+"ссылки, несуществующие файлы и файлы, требующие прав доступа пропускаются."
+#: src/binchecker-diff-dialog.c:80
+#, c-format
+msgid ""
+"Difference %d:\n"
+"Position: %d\n"
+"Length: %d bytes\n"
+"\n"
+"File 1: %s\n"
+"File 2: %s"
+msgstr ""
+"Разница %d:\n"
+"Позиция: %d\n"
+"Длинна: %d bytes\n"
+"\n"
+"Файл 1: %s\n"
+"Файл 2: %s"
+
+#: src/binchecker-diff-dialog.c:120
+#, c-format
+msgid "Differences in: %s"
+msgstr "Различия в: %s"
+
+#: src/binchecker-dialog.ui:7
+msgctxt "dialog-title"
+msgid "File Differences"
+msgstr "Различия в файлах"
+
+#: src/binchecker-dialog.ui:53
+msgctxt "button"
+msgid "Close"
+msgstr "Закрыть"
+
+#: src/binchecker-window.ui:12 src/binchecker-window.ui:151
+msgctxt "window-title"
+msgid "BinChecker"
+msgstr "BinChecker"
+
+#: src/binchecker-window.ui:23
+msgctxt "tooltip|main-menu"
+msgid "Main Menu"
+msgstr "Главное меню"
+
+#: src/binchecker-window.ui:34
+msgctxt "group-title|directory-selection"
+msgid "Directory selection"
+msgstr "Выбор директорий"
+
+#: src/binchecker-window.ui:39 src/binchecker-window.ui:57
+msgctxt "row-subtitle|choose-directory"
+msgid "Choose directory"
+msgstr "Выберите директорию"
+
+#: src/binchecker-window.ui:40
+msgctxt "row-title|first-directory"
+msgid "First directory"
+msgstr "Первая директория"
+
+#: src/binchecker-window.ui:46
+msgctxt "tooltip|select-first-dir"
+msgid "Select first directory"
+msgstr "Выберите первую директорию"
+
+#: src/binchecker-window.ui:58
+msgctxt "row-title|second-directory"
+msgid "Second directory"
+msgstr "Вторая директория"
+
+#: src/binchecker-window.ui:64
+msgctxt "tooltip|select-second-dir"
+msgid "Select second directory"
+msgstr "Выберите вторую директорию"
+
+#: src/binchecker-window.ui:77
+msgctxt "row-subtitle|padding-amount"
+msgid "amount of bytes to pad the corrupted bytes with"
+msgstr "размер контекста, предоставляемого вокруг битых данных"
+
+#: src/binchecker-window.ui:78
+msgctxt "row-title|padding-amount"
+msgid "Padding amount"
+msgstr "Размер контекста"
+
+#: src/binchecker-window.ui:90
+msgctxt "tooltip|padding-amount"
+msgid "Set the padding amount for corrupted bytes"
+msgstr "Выставите размер контекста вокруг битых данных"
+
+#: src/binchecker-window.ui:101
+msgctxt "button-label|compare-folders"
+msgid "Compare folders"
+msgstr "Сравнить директории"
+
+#: src/binchecker-window.ui:102
+msgctxt "tooltip|compare-folders"
+msgid "Start comparing the selected directories"
+msgstr "Начать сравнивать выбранные директории"
+
+#: src/binchecker-window.ui:117
+msgctxt "page-title|results"
+msgid "Results"
+msgstr "Результат"
+
+#: src/binchecker-window.ui:136
+msgctxt "view-name|results"
+msgid "Result"
+msgstr "Результат"
+
+#: src/binchecker-window.ui:157
+msgctxt "menu-item"
+msgid "_Preferences"
+msgstr "Предпочтения"
+
+#: src/binchecker-window.ui:161
+msgctxt "menu-item"
+msgid "_Keyboard Shortcuts"
+msgstr "Горячие клавиши"
+
+#: src/binchecker-window.ui:165
+msgctxt "menu-item"
+msgid "_About BinChecker"
+msgstr "О Приложении"
