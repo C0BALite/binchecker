@@ -73,8 +73,8 @@ add_diff_chunk(BincheckerDiffDialog *self, const struct diffChunk *diff, int ind
     GtkWidget *frame;
     GtkWidget *frame_content;
 
-    const char *file1_hex = diff->diffFile1 ? (const char *)diff->diffFile1 : "NULL";
-    const char *file2_hex = diff->diffFile2 ? (const char *)diff->diffFile2 : "NULL";
+    const char *file1_hex = diff->originalDiffFile ? (const char *)diff->originalDiffFile : "NULL";
+    const char *file2_hex = diff->corruptedDiffFile ? (const char *)diff->corruptedDiffFile : "NULL";
 
     snprintf(diff_text, sizeof(diff_text),
             _("Difference %d:\nPosition: %d\nLength: %d bytes\n\nFile 1: %s\nFile 2: %s"),
@@ -126,7 +126,7 @@ binchecker_diff_dialog_set_data(BincheckerDiffDialog *self,
 
     if (diffs) {
         while (diff_count < 10 && (diffs[diff_count].pos != 0 || diffs[diff_count].length != 0 ||
-                diffs[diff_count].diffFile1 != NULL || diffs[diff_count].diffFile2 != NULL)) {
+                diffs[diff_count].originalDiffFile != NULL || diffs[diff_count].corruptedDiffFile != NULL)) {
             diff_count++;
         }
     }

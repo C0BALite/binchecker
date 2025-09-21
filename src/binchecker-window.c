@@ -44,8 +44,8 @@ struct _BincheckerWindow {
 
 typedef struct {
         BincheckerWindow * self;
-        char * file1_path;
-        char * file2_path;
+        char * originalFilepath;
+        char * corruptedFilepath;
         char * basename;
         int padding;
 }
@@ -65,8 +65,8 @@ free_diff_chunk(gpointer data) {
         if (diffs) {
                 int i = 0;
                 while (diffs[i].pos != 0 || diffs[i].length != 0) {
-                        free(diffs[i].diffFile1);
-                        free(diffs[i].diffFile2);
+                        free(diffs[i].originalDiffFile);
+                        free(diffs[i].corruptedDiffFile);
                         i++;
                 }
                 free(diffs);
@@ -82,7 +82,7 @@ compare_task_thread_func(GTask * task, gpointer source_object, gpointer task_dat
                 return;
         }
 
-        diffs = compare_files(data -> file1_path, data -> file2_path, data -> padding);
+        diffs = compare_files(data -> originalFilepath, data -> corruptedFilepath, data -> padding);
 
         if (g_cancellable_is_cancelled(cancellable)) {
                 if (diffs) {
@@ -141,8 +141,8 @@ static void
 free_task_data(gpointer data) {
         CompareTaskData * task_data = data;
         if (task_data) {
-                g_free(task_data -> file1_path);
-                g_free(task_data -> file2_path);
+                g_free(task_data -> originalFilepath);
+                g_free(task_data -> corruptedFilepath);
                 g_free(task_data -> basename);
                 g_free(task_data);
         }
@@ -246,12 +246,10 @@ on_scan_button_clicked(GtkButton * button, BincheckerWindow * self) {
         for (i = 0; i < count1; i++) {
                 CompareTaskData * task_data = g_new0(CompareTaskData, 1);
                 char * basename = g_path_get_basename(files1[i]);
-                char * fp1 = g_build_filename(self -> dir1_path, basename, NULL);
-                char * fp2 = g_build_filename(self -> dir2_path, basename, NULL);
 
                 task_data -> self = self;
-                task_data -> file1_path = fp1;
-                task_data -> file2_path = fp2;
+                task_data -> originalFilepath = g_build_filename(self -> dir1_path, basename, NULL);
+                task_data -> corruptedFilepath = g_build_filename(self -> dir2_path, basename, NULL);
                 task_data -> basename = g_strdup(basename);
                 task_data -> padding = padding;
 
