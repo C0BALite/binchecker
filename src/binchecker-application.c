@@ -72,7 +72,7 @@ binchecker_application_about_action (GSimpleAction *action,
                                      GVariant      *parameter,
                                      gpointer       user_data)
 {
-	static const char *developers[] = {"Unknown", NULL};
+	static const char *developers[] = {"C0BA"};
 	BincheckerApplication *self = user_data;
 	GtkWindow *window = NULL;
 
