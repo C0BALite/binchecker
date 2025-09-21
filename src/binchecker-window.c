@@ -99,11 +99,16 @@ compare_task_thread_func(GTask * task, gpointer source_object, gpointer task_dat
 
 static void
 compare_task_complete(GObject * source_object, GAsyncResult * res, gpointer user_data) {
-        BincheckerWindow * self = BINCHECKER_WINDOW(user_data);
+        BincheckerWindow * self;
+        CompareResult * result;
         GError * error = NULL;
-        CompareResult * result = g_task_propagate_pointer(G_TASK(res), & error);
         GtkWidget * row;
         GtkWidget * label;
+        if(!ADW_IS_APPLICATION_WINDOW(user_data)){
+                return;
+        }
+        self = BINCHECKER_WINDOW(user_data);
+        result = g_task_propagate_pointer(G_TASK(res), & error);
         if (error) {
                 g_warning("Task failed: %s", error -> message);
                 g_error_free(error);
