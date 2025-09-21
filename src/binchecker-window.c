@@ -85,7 +85,9 @@ compare_task_thread_func(GTask * task, gpointer source_object, gpointer task_dat
         diffs = compare_files(data -> file1_path, data -> file2_path, data -> padding);
 
         if (g_cancellable_is_cancelled(cancellable)) {
-                free_diff_chunk(diffs);
+                if (diffs) {
+                        free_diff_chunk(diffs);
+                }
                 return;
         }
         result = g_new0(CompareResult, 1);
@@ -113,7 +115,7 @@ compare_task_complete(GObject * source_object, GAsyncResult * res, gpointer user
         }
 
         if (result -> diffs) {
-                g_hash_table_insert(self -> file_diffs, g_strdup(result -> basename), result -> diffs)
+                g_hash_table_insert(self -> file_diffs, g_strdup(result -> basename), result -> diffs);
                 row = gtk_list_box_row_new();
                 label = gtk_label_new(result -> basename);
                 gtk_widget_set_margin_start(label, 12);
@@ -235,9 +237,6 @@ on_scan_button_clicked(GtkButton * button, BincheckerWindow * self) {
         get_all_file_paths(self -> dir1_path, & files1, & count1, & capacity1);
         padding_value = adw_spin_row_get_value(self -> padding_spin);
         padding = (int) padding_value;
-        if (self -> cancellable) {
-                g_cancellable_cancel(self -> cancellable);
-        }
         self -> cancellable = g_cancellable_new();
         for (i = 0; i < count1; i++) {
                 CompareTaskData * task_data = g_new0(CompareTaskData, 1);
@@ -262,19 +261,28 @@ on_scan_button_clicked(GtkButton * button, BincheckerWindow * self) {
                 free(files1[i]);
         }
         free(files1);
-        g_object_unref(self -> cancellable);
         adw_navigation_view_push(self -> navigation_view, self -> results_page);
+}
+
+static void
+scan_early_cancel(AdwNavigationView * navView, AdwNavigationPage * page, BincheckerWindow * self) {
+        if (self -> cancellable) {
+                g_cancellable_cancel(self -> cancellable);
+        }
 }
 
 static void
 binchecker_window_dispose(GObject * object) {
         BincheckerWindow * self = BINCHECKER_WINDOW(object);
 
+        if (self -> cancellable) {
+                g_cancellable_cancel(self -> cancellable);
+                g_clear_object( & self -> cancellable);
+        }
+
         g_clear_pointer( & self -> dir1_path, g_free);
         g_clear_pointer( & self -> dir2_path, g_free);
         g_clear_pointer( & self -> file_diffs, g_hash_table_destroy);
-        g_cancellable_cancel(self -> cancellable);
-        g_clear_pointer( & self -> cancellable, g_free);
         G_OBJECT_CLASS(binchecker_window_parent_class) -> dispose(object);
 }
 
@@ -302,6 +310,7 @@ binchecker_window_init(BincheckerWindow * self) {
         g_signal_connect(self -> dir2_button, "clicked", G_CALLBACK(on_dir2_button_clicked), self);
         g_signal_connect(self -> scan_button, "clicked", G_CALLBACK(on_scan_button_clicked), self);
         g_signal_connect(self -> file_list, "row-activated", G_CALLBACK(on_file_row_clicked), self);
+        g_signal_connect(self -> navigation_view, "popped", G_CALLBACK(scan_early_cancel), self);
 }
 
 GtkWidget *
